@@ -1,11 +1,12 @@
 const express = require('express');
-const app = express();
+const server = express();
+const cors = require('cors')
 const open = require("open");
-
-app.use(express.static('docs'));
+server.use(cors())
+server.use(express.static('docs'));
 open("http://localhost:9080");
 
-app.get('/api/v1/hw_100', function(req, res) {
+server.get('/api/v1/hw_100', function(req, res) {
         const mysql = require('mysql');
         const conn = mysql.createConnection({
             host: 'localhost',
@@ -24,9 +25,9 @@ app.get('/api/v1/hw_100', function(req, res) {
     }
 )
 
-app.set('port', process.env.PORT || 8000);
-app.set('ip', process.env.NODEJS_IP || '127.0.0.1');
+server.set('port', process.env.PORT || 9080);
+server.set('ip', process.env.NODEJS_IP || '127.0.0.1');
 
-app.listen(app.get('port'), function() {
-    console.log('%s: Node server started on %s ...', Date(Date.now()), app.get('port'));
+server.listen(server.get('port'), function() {
+    console.log('%s: Node server started on %s ...', Date(Date.now()), server.get('port'));
 });

@@ -7,6 +7,6 @@ $(document).ready(function() {
             { "data": "Index" },
             { "data": "Height_Inches" },
             { "data": "Weight_Pounds" }
-        ]
+        ],
     } );
 } );
