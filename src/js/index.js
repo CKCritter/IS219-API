@@ -1,12 +1,13 @@
-$(document).ready(function() {
-    console.log("ready")
-    $('#hw_100').DataTable( {
-        "ajax": "http://localhost:9080/api/v1/hw_100",
-        "columns": [
-            { "data": "id" },
-            { "data": "Index" },
-            { "data": "Height_Inches" },
-            { "data": "Weight_Pounds" }
-        ],
-    } );
-} );
+import generateTable from "./generateTable";
+
+const req = new XMLHttpRequest();
+const url = "http://localhost:9080/api/v1/hw_100";
+req.open("GET", url);
+req.send();
+
+req.onreadystatechange = () => {
+    if(req.readyState === XMLHttpRequest.DONE) {
+        const data = JSON.parse(req.responseText);
+        generateTable(data.data);
+    }
+}
