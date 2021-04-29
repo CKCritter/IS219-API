@@ -12,6 +12,10 @@ router.get('/register', (req, res) => {
 
 router.post('/register', accountController.register);
 
+router.post('/login', accountController.login);
 
+router.get('/login', (req, res) => {
+    res.render('login');
+});
 
 module.exports = router;

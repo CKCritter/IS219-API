@@ -20,6 +20,15 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json())
 server.use(cookieParser());
 
+server.use((req, res, next) => {
+    // Get auth token from the cookies
+    const authToken = req.cookies['AuthToken'];
+
+    // Inject the user to the request
+    req.user = authToken[authToken];
+
+    next();
+});
 
 
 server.use('/api/v1/hw_100', hwRoutes);
