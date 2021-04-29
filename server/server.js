@@ -30,7 +30,6 @@ server.use((req, res, next) => {
     next();
 });
 
-
 server.use('/api/v1/hw_100', hwRoutes);
 server.use('', mainRoutes);
 

@@ -2,19 +2,30 @@ const express = require("express");
 const router = express.Router();
 const hwController = require("../controllers/hwController.js")
 
+const requireAuth = (req, res, next) => {
+    if (req.user) {
+        next();
+    } else {
+        res.render('login', {
+            message: 'Please login to continue',
+            messageClass: 'alert-danger'
+        });
+    }
+};
+
 //Create
-router.post('/', hwController.post);
+router.post('/', requireAuth, hwController.post);
 
 //Read
-router.get('/', hwController.getAll);
+router.get('/', requireAuth, hwController.getAll);
 
 //Read
-router.get('/:id', hwController.getById);
+router.get('/:id', requireAuth, hwController.getById);
 
 //Update
-router.put('/:id', hwController.put);
+router.put('/:id', requireAuth, hwController.put);
 
 //Delete
-router.delete('/:id', hwController.delete);
+router.delete('/:id', requireAuth, hwController.delete);
 
 module.exports = router;

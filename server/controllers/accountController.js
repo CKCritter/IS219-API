@@ -57,7 +57,7 @@ exports.login = function(req, res) {
         res.cookie('AuthToken', authToken);
 
         // Redirect user to the protected page
-        res.redirect('/protected');
+        res.redirect('/api/v1/hw_100');
     } else {
         res.render('login', {
             message: 'Invalid username or password',
