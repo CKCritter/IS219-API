@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const accessTokenSecret = "a_secret_key"
+const refreshTokenSecret = 'a_different_secret_key';
+const refreshTokens = [];
 
 exports.register = function(req, res) {
     const { email, firstName, lastName, password, confirmPassword } = req.body;
@@ -50,10 +52,14 @@ exports.login = function(req, res) {
 
     if (user) {
         // Generate an access token
-        const accessToken = jwt.sign({ username: user.username,  role: user.role }, accessTokenSecret);
+        const accessToken = jwt.sign({ username: user.username,  role: user.role }, accessTokenSecret, { expiresIn: '1m'});
+        const refreshToken = jwt.sign({ username: user.username, role: user.role }, refreshTokenSecret);
+
+        refreshTokens.push(refreshToken);
 
         res.json({
-            accessToken
+            accessToken,
+            refreshToken
         });
     } else {
         res.send('Username or password incorrect');
@@ -78,6 +84,36 @@ exports.requireAuth = function(req, res, next) {
         res.sendStatus(401);
     }
 };
+
+exports.refreshToken = function(req, res) {
+    const head = req.headers.authorization;
+    let token = "";
+
+    if(head.startsWith("Bearer "))
+    {
+        token = head.substring(7);
+    }
+    else
+    {
+        return res.sendStatus(401);
+    }
+
+    if (!refreshTokens.includes(token)) {
+        return res.sendStatus(403);
+    }
+
+    jwt.verify(token, refreshTokenSecret, (err, user) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+
+        const accessToken = jwt.sign({ username: user.username, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
+
+        res.json({
+            accessToken
+        });
+    });
+}
 
 const crypto = require('crypto');
 
