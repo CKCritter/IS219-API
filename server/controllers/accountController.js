@@ -1,5 +1,16 @@
 const authTokens = {};
 
+exports.requireAuth = function(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.render('login', {
+            message: 'Please login to continue',
+            messageClass: 'alert-danger'
+        });
+    }
+}
+
 exports.register = function(req, res) {
     const { email, firstName, lastName, password, confirmPassword } = req.body;
 
