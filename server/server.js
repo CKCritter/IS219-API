@@ -13,11 +13,6 @@ server.engine('hbs', handlebars({
     extname: '.hbs',
 }));
 
-const hwRoutes = require("./routes/hw.routes");
-const mainRoutes = require("./routes/main.routes");
-
-server.use(bodyParser.urlencoded({ extended: true }))
-server.use(bodyParser.json())
 server.use(cookieParser());
 
 server.use((req, res, next) => {
@@ -25,10 +20,17 @@ server.use((req, res, next) => {
     const authToken = req.cookies['AuthToken'];
 
     // Inject the user to the request
-    req.user = authToken[authToken];
+    req.user = authToken;
 
     next();
 });
+
+const hwRoutes = require("./routes/hw.routes");
+const mainRoutes = require("./routes/main.routes");
+
+server.use(bodyParser.urlencoded({ extended: true }))
+server.use(bodyParser.json())
+
 
 server.use('/api/v1/hw_100', hwRoutes);
 server.use('', mainRoutes);

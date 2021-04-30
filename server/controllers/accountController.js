@@ -55,7 +55,6 @@ exports.login = function(req, res) {
 
         // Setting the auth token in cookies
         res.cookie('AuthToken', authToken);
-
         // Redirect user to the protected page
         res.redirect('/api/v1/hw_100');
     } else {
