@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const accountController = require("../controllers/accountController.js")
 
+router.get('/hw', function (req, res) {
+    res.render('hw');
+});
+
 router.get('/', function (req, res) {
     res.render('home');
 });
