@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const accessTokenSecret = "a_secret_key"
 const refreshTokenSecret = 'a_different_secret_key';
-const refreshTokens = [];
+let refreshTokens = [];
 
 exports.register = function(req, res) {
     const { email, firstName, lastName, password, confirmPassword } = req.body;
@@ -52,7 +52,7 @@ exports.login = function(req, res) {
 
     if (user) {
         // Generate an access token
-        const accessToken = jwt.sign({ username: user.username,  role: user.role }, accessTokenSecret, { expiresIn: '1m'});
+        const accessToken = jwt.sign({ username: user.username,  role: user.role }, accessTokenSecret, { expiresIn: '10m'});
         const refreshToken = jwt.sign({ username: user.username, role: user.role }, refreshTokenSecret);
 
         refreshTokens.push(refreshToken);
@@ -113,6 +113,13 @@ exports.refreshToken = function(req, res) {
             accessToken
         });
     });
+}
+
+exports.logout = function(req, res) {
+    const { token } = req.body;
+    refreshTokens = refreshTokens.filter(t=> t !== token);
+
+    res.send("Logout successful");
 }
 
 const crypto = require('crypto');

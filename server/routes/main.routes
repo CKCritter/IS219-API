@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const accountController = require("../controllers/accountController.js")
 
-router.post('/token', accountController.refreshToken)
+router.post('/logout', accountController.logout);
+
+router.post('/token', accountController.refreshToken);
 
 router.get('/hw', accountController.requireAuth, function (req, res) {
     res.render('hw');
