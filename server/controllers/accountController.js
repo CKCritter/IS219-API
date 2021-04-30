@@ -1,4 +1,5 @@
-const authTokens = {};
+const jwt = require('jsonwebtoken');
+const accessTokenSecret = "a_secret_key"
 
 exports.register = function(req, res) {
     const { email, firstName, lastName, password, confirmPassword } = req.body;
@@ -48,25 +49,15 @@ exports.login = function(req, res) {
     });
 
     if (user) {
-        const authToken = generateAuthToken();
+        // Generate an access token
+        const accessToken = jwt.sign({ username: user.username,  role: user.role }, accessTokenSecret);
 
-        // Store authentication token
-        authTokens[authToken] = user;
-
-        // Setting the auth token in cookies
-        res.cookie('AuthToken', authToken);
-        // Redirect user to the protected page
-        res.redirect('/hw');
-    } else {
-        res.render('login', {
-            message: 'Invalid username or password',
-            messageClass: 'alert-danger'
+        res.json({
+            accessToken
         });
+    } else {
+        res.send('Username or password incorrect');
     }
-}
-
-const generateAuthToken = () => {
-    return crypto.randomBytes(30).toString('hex');
 }
 
 const crypto = require('crypto');

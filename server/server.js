@@ -1,6 +1,6 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
-const cookieParser = require('cookie-parser');
+
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const open = require("open");
@@ -12,18 +12,6 @@ server.use(cors());
 server.engine('hbs', handlebars({
     extname: '.hbs',
 }));
-
-server.use(cookieParser());
-
-server.use((req, res, next) => {
-    // Get auth token from the cookies
-    const authToken = req.cookies['AuthToken'];
-
-    // Inject the user to the request
-    req.user = authToken;
-
-    next();
-});
 
 const hwRoutes = require("./routes/hw.routes");
 const mainRoutes = require("./routes/main.routes");
