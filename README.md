@@ -1,3 +1,5 @@
+Screenshots are under screenshots/express basic auth
+
 Code partially based on what was given in class.  
 Run npm install  
 Run docker-compose.yml  
