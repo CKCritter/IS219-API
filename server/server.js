@@ -28,6 +28,31 @@ server.use((req, res, next) => {
 const hwRoutes = require("./routes/hw.routes");
 const mainRoutes = require("./routes/main.routes");
 
+const { auth } = require('express-openid-connect');
+
+const config = {
+    authRequired: false,
+    auth0Logout: true,
+    secret: 'a long, randomly-generated string stored in env',
+    baseURL: 'http://localhost:9080',
+    clientID: 'AX4LKct4qaEQ1VBnDBoynhUeEqZTIsNq',
+    issuerBaseURL: 'https://dev-qg8-t8rt.us.auth0.com'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+server.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+server.get('/', (req, res) => {
+    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
+
+const { requiresAuth } = require('express-openid-connect');
+
+server.get('/profile', requiresAuth(), (req, res) => {
+    res.send(JSON.stringify(req.oidc.user));
+});
+
 server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json())
 
