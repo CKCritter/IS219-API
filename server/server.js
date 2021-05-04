@@ -5,15 +5,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const open = require('open');
 
-const { auth, requiresAuth  } = require('express-openid-connect');
+const { auth, requiresAuth } = require('express-openid-connect');
 
 const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: 'a long, randomly-generated string stored in env',
-    baseURL: 'http://localhost:9080',
-    clientID: 'AX4LKct4qaEQ1VBnDBoynhUeEqZTIsNq',
-    issuerBaseURL: 'https://dev-qg8-t8rt.us.auth0.com',
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'a long, randomly-generated string stored in env',
+  baseURL: 'http://localhost:9080',
+  clientID: 'AX4LKct4qaEQ1VBnDBoynhUeEqZTIsNq',
+  issuerBaseURL: 'https://dev-qg8-t8rt.us.auth0.com',
 };
 
 const server = express();
