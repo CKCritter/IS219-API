@@ -4,7 +4,17 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const open = require('open');
-const { auth } = require('express-openid-connect');
+
+const { auth, requiresAuth  } = require('express-openid-connect');
+
+const config = {
+    authRequired: false,
+    auth0Logout: true,
+    secret: 'a long, randomly-generated string stored in env',
+    baseURL: 'http://localhost:9080',
+    clientID: 'AX4LKct4qaEQ1VBnDBoynhUeEqZTIsNq',
+    issuerBaseURL: 'https://dev-qg8-t8rt.us.auth0.com',
+};
 
 const server = express();
 
@@ -29,15 +39,6 @@ server.use((req, res, next) => {
 const hwRoutes = require('./routes/hw.routes');
 const mainRoutes = require('./routes/main.routes');
 
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: 'a long, randomly-generated string stored in env',
-  baseURL: 'http://localhost:9080',
-  clientID: 'AX4LKct4qaEQ1VBnDBoynhUeEqZTIsNq',
-  issuerBaseURL: 'https://dev-qg8-t8rt.us.auth0.com',
-};
-
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 server.use(auth(config));
 
@@ -46,7 +47,7 @@ server.get('/', (req, res) => {
   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
-server.get('/profile', auth(), (req, res) => {
+server.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
 });
 
