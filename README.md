@@ -1,6 +1,6 @@
-Screenshots are under screenshots/auth0
+Screenshots are under screenshots/linting
 
-The screen shots are not particularly useful, any time you try to access a protceted page it redirects to login if you aren't logged in, and obviously I can't screenshot a redirect
+Used eslint with airbnb rules, console erros is disabled because its a server and I can
 
 Code partially based on what was given in class.  
 Run npm install  
