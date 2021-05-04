@@ -1,21 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const hwController = require("../controllers/hwController.js")
-const accountController = require("../controllers/accountController.js")
+const { requiresAuth } = require('express-openid-connect');
 
 //Create
-router.post('/', accountController.requireAuth, hwController.post);
+router.post('/', requiresAuth(), hwController.post);
 
 //Read
-router.get('/', accountController.requireAuth, hwController.getAll);
+router.get('/', requiresAuth(), hwController.getAll);
 
 //Read
-router.get('/:id', accountController.requireAuth, hwController.getById);
+router.get('/:id', requiresAuth(), hwController.getById);
 
 //Update
-router.put('/:id', accountController.requireAuth, hwController.put);
+router.put('/:id', requiresAuth(), hwController.put);
 
 //Delete
-router.delete('/:id', accountController.requireAuth, hwController.delete);
+router.delete('/:id', requiresAuth(), hwController.delete);
 
 module.exports = router;
